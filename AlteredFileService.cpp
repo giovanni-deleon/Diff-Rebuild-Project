@@ -4,7 +4,6 @@
 #include <fstream>
 #include <vector>
 #include <cctype>
-//#include <algorithm>
 using namespace std;
 
 // File Service Constructor.
@@ -27,100 +26,85 @@ bool FileService::isLineEmpty(const std::string& line) {
     return removeWhitespace(line).empty();
 }
 
-// THE GOOD STUFF
-vector<int> FileService::compareFiles(const std::vector<std::string>& fileOneContents, const std::vector<std::string>& fileTwoContents) {
-    vector<int> diffIndices; // Vector to store indices where differences are found.
-
-    size_t maxSize = std::max(fileOneContents.size(), fileTwoContents.size());
-
-    // Compare the files line by line.
-    for (size_t i = 0; i < maxSize; ++i) {
-        // Get the lines to compare
-        std::string lineOne = (i < fileOneContents.size()) ? fileOneContents[i] : "";
-        std::string lineTwo = (i < fileTwoContents.size()) ? fileTwoContents[i] : "";
-
-        // Skip empty lines (lines with only whitespace)
-        if (isLineEmpty(lineOne) && isLineEmpty(lineTwo)) {
-            continue;  // Skip this line if both lines are empty
-        }
-
-        // Remove whitespace from both lines
-        std::string strippedLineOne = removeWhitespace(lineOne);
-        std::string strippedLineTwo = removeWhitespace(lineTwo);
-
-        // If the lines are different after removing whitespace
-        if (strippedLineOne != strippedLineTwo) {
-
-
-
-
-            // Report the difference
-            std::cout << "Difference found at line " << i + 1 << ":\n";
-            std::cout << "File 1: " << lineOne << "\n";
-            std::cout << "File 2: " << lineTwo << "\n";
-            diffIndices.push_back(i);  // Add the index of the difference to the vector
-        }
-    }
-
-    return diffIndices; // Return the vector containing the indices of differences.
-}
-
-/// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// Function that compares the files and displays the differences.
 void FileService::compareFilesTwo(const vector<string>& fileOneContents, const vector<string>& fileTwoContents) {
     int fileOneSize = fileOneContents.size();
     int fileTwoSize = fileTwoContents.size();
-    string diffFound = fileTwoContents[0];
-    int doesExist = 0;
 
-
+    // Compare lines in fileOneContents with fileTwoContents
     for (int i = 0; i < fileOneSize; i++) {
-        
         string fileOneLine = fileOneContents[i];
+        bool foundMatch = false;
 
+        // Skip empty lines after removing whitespace
+        if (isLineEmpty(fileOneLine)) {
+            continue;
+        }
+
+        // Compare with each line of fileTwoContents
         for (int j = 0; j < fileTwoSize; j++) {
-
             string fileTwoLine = fileTwoContents[j];
 
-
-            if (isLineEmpty(fileOneLine) && isLineEmpty(fileTwoLine)) {
-                continue;  // Skip this line if both lines are empty
+            // Skip empty lines after removing whitespace
+            if (isLineEmpty(fileTwoLine)) {
+                continue;
             }
 
-            // Remove whitespace from both lines
-            string fileOneLineS = removeWhitespace(fileOneLine);
-            string fileTwoLineS = removeWhitespace(fileTwoLine);
+            // Remove whitespace from both lines for comparison
+            string fileOneLineStripped = removeWhitespace(fileOneLine);
+            string fileTwoLineStripped = removeWhitespace(fileTwoLine);
 
-
-            if (fileOneLineS == fileTwoLineS) {
-                doesExist += 1;
-                j = fileTwoSize;
-                
+            // If lines match after stripping whitespace
+            if (fileOneLineStripped == fileTwoLineStripped) {
+                foundMatch = true;
+                break;  // Stop checking further lines in fileTwo
             }
-
-            if (fileOneLineS != fileTwoLineS) {
-                doesExist *= 1;
-                if (j >= i) {
-                    diffFound = fileTwoContents[i];
-                }
-            }
-
         }
 
-
-        if (doesExist ==0) {
-            cout << "DIFF: " << diffFound << endl;
+        // If no match is found, print the difference
+        if (!foundMatch) {
+            cout << "DIFF at line " << i + 1 << " in File 1: " << fileOneLine << endl;
         }
-
-        doesExist = 0;
-
     }
 
-   
+    // Now compare lines in fileTwoContents with fileOneContents
+    for (int i = 0; i < fileTwoSize; i++) {
+        string fileTwoLine = fileTwoContents[i];
+        bool foundMatch = false;
+
+        // Skip empty lines after removing whitespace
+        if (isLineEmpty(fileTwoLine)) {
+            continue;
+        }
+
+        // Compare with each line of fileOneContents
+        for (int j = 0; j < fileOneSize; j++) {
+            string fileOneLine = fileOneContents[j];
+
+            // Skip empty lines after removing whitespace
+            if (isLineEmpty(fileOneLine)) {
+                continue;
+            }
+
+            // Remove whitespace from both lines for comparison
+            string fileOneLineStripped = removeWhitespace(fileOneLine);
+            string fileTwoLineStripped = removeWhitespace(fileTwoLine);
+
+            // If lines match after stripping whitespace
+            if (fileOneLineStripped == fileTwoLineStripped) {
+                foundMatch = true;
+                break;  // Stop checking further lines in fileOne
+            }
+        }
+
+        // If no match is found, print the difference
+        if (!foundMatch) {
+            cout << "DIFF at line " << i + 1 << " in File 2: " << fileTwoLine << endl;
+        }
+    }
 }
 
 
-/// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Function to read files and compare them.
 void FileService::diff(string pFileName, string pFileNameTwo) {
@@ -154,19 +138,4 @@ void FileService::diff(string pFileName, string pFileNameTwo) {
     // CALLS MY JANKY FILE
 
     compareFilesTwo(fileOneContents, fileTwoContents);
-
-        // Call the compareFiles function to get the differences.
-        ///compareFiles(fileOneContents, fileTwoContents);
-
-        // Output the differences (if any).
-        ///if (diffIndices.empty()) {
-        ///    cout << "The files are identical." << endl;
-        ///}
-        ///else {
-        ///    cout << "Differences found at indices: ";
-        ///    for (int index : diffIndices) {
-        ///        cout << index << " ";
-        ///    }
-        ///    cout << endl;
-        ///}
 }
