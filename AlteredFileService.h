@@ -9,7 +9,6 @@ class FileService {
 
 public:
     FileService();// Constructor.
-    vector<int> compareFiles(const vector<string>& fileOneContents, const vector<string>& fileTwoContents);
     void compareFilesTwo(const vector<string>& fileOneContents, const vector<string>& fileTwoContents);
 
 
