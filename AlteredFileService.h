@@ -9,7 +9,7 @@ class FileService {
 
 public:
     FileService();// Constructor.
-    void compareFilesTwo(const vector<string>& fileOneContents, const vector<string>& fileTwoContents);
+    void compareFilesTwo(const vector<pair<int, string>>& fileOneContents, const vector<pair<int, string>>& fileTwoContents);
 
 
     string removeWhitespace(const string& str);
