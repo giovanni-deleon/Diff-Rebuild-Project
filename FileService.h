@@ -23,7 +23,11 @@ public:
 
     void diff(std::string pFileName, std::string pFileNameTwo);// Takes File Name As Parameter.
     
-    void promptingServ();
+    void promptingServ(const vector<pair<int, string>>& fileOneContents,
+                   const vector<pair<int, string>>& fileTwoContents);
+
+    void fusionService(const std::vector<std::pair<int, std::string>>& fileOneContents,
+                   const std::vector<std::pair<int, std::string>>& fileTwoContents, int pBaseFile);
 
 };
 
