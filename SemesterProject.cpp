@@ -4,13 +4,13 @@
 
 #include <iostream>
 #include "FileService.h"
-#include <fstream>
-#include <vector>
-using namespace std;
+#include <string>
 
 int main(){
   FileService fileService;
-  string fileName, fileNameTwo;
+  std::string fileName, fileNameTwo;
 
   fileService.diff(fileName, fileNameTwo);
+
+  return 0;
 }
