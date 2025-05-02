@@ -68,10 +68,11 @@ void FileService::compareFilesTwo(const vector<pair<int, string>>& fileOneConten
 
         // If no match is found, print the difference (File 1 line with no corresponding line in File 2).
         if (!foundMatch) {
-              if(fileOneLine!= ""){
+            if (fileOneLine != "") {
                 cout << fileOneLine << " : " << "File 2 Line " << lineNumber << " - " << fileTwoContents[i].second << endl;
-            }else{
-              cout << fileOneLine << " : " << "File 2 Line " << lineNumber << " - null" << endl;
+            }
+            else {
+                cout << fileOneLine << " : " << "File 2 Line " << lineNumber << " - null" << endl;
             }
         }
     }
@@ -109,10 +110,11 @@ void FileService::compareFilesTwo(const vector<pair<int, string>>& fileOneConten
 
         // If no match is found, print the difference (File 2 line with no corresponding line in File 1).
         if (!foundMatch) {
-            if(fileTwoLine!= ""){
-              cout << fileTwoLine << " : " << "File 1 Line " << lineNumber << " - " << fileOneContents[i].second << endl;
-            }else{
-              cout << fileTwoLine << " : " << "File 1 Line " << lineNumber << " - null" << endl;
+            if (fileTwoLine != "") {
+                cout << fileTwoLine << " : " << "File 1 Line " << lineNumber << " - " << fileOneContents[i].second << endl;
+            }
+            else {
+                cout << fileTwoLine << " : " << "File 1 Line " << lineNumber << " - null" << endl;
             }
         }
     }
@@ -130,8 +132,8 @@ void FileService::fancyDiff(int pIndex, int pFileOneLineAmount, int pFileTwoLine
         cout << "*";
     }
     cout << "\n|" << setw(pIndex) << "Index" << " | ";
-    cout << "File One" << setw(pFileOneLineAmount +7) << "| ";
-    cout << "File Two" << setw(pFileTwoLineAmount +7) << "| " << endl;
+    cout << "File One" << setw(pFileOneLineAmount + 7) << "| ";
+    cout << "File Two" << setw(pFileTwoLineAmount + 7) << "| " << endl;
     for (int i = 0; i <= 88; i++) {
         cout << "*";
     }
@@ -149,32 +151,40 @@ void FileService::fancyDiff(int pIndex, int pFileOneLineAmount, int pFileTwoLine
         }
 
         // Print lines from File One.
-        if (j < fileOneContents.size()) {
-            if(fileOneContents[j].second != fileTwoContents[j].second){
-              cout << left << setw(pFileOneLineAmount + 13) << fileOneContents[j].second;
+        if (j < fileOneContents.size() && j < fileTwoContents.size()) {
+            if (fileOneContents[j].second != fileTwoContents[j].second) {
+                cout << left << setw(pFileOneLineAmount + 13) << fileOneContents[j].second;
             }
             else {
-              cout << "                                      ";
+                cout << "                                      ";
             }
         }
-        else {
-            cout << setw(pFileOneLineAmount + 13) << "--null--";  // If no line exists, print "--null--".
+        else if (j < fileOneContents.size()) {
+            cout << left << setw(pFileOneLineAmount + 13) << fileOneContents[j].second;
         }
+        else {
+            cout << setw(pFileOneLineAmount + 13) << "--null--";
+        }
+
 
         cout << " | ";
 
         // Print lines from File Two.
-        if (j < fileTwoContents.size()) {
-            if(fileOneContents[j].second != fileTwoContents[j].second){
-              cout << left << setw(pFileTwoLineAmount + 13) << fileTwoContents[j].second;
+        if (j < fileOneContents.size() && j < fileTwoContents.size()) {
+            if (fileOneContents[j].second != fileTwoContents[j].second) {
+                cout << left << setw(pFileTwoLineAmount + 13) << fileTwoContents[j].second;
             }
             else {
-              cout << "                                      ";// IM RIGHT HERE
+                cout << "                                      ";
             }
         }
-        else {
-            cout << setw(pFileTwoLineAmount + 13) << "--null--";  // If no line exists, print "--null--".
+        else if (j < fileTwoContents.size()) {
+            cout << left << setw(pFileTwoLineAmount + 13) << fileTwoContents[j].second;
         }
+        else {
+            cout << setw(pFileTwoLineAmount + 13) << "--null--";
+        }
+
 
         cout << "|" << endl;
     }
@@ -184,79 +194,79 @@ void FileService::fancyDiff(int pIndex, int pFileOneLineAmount, int pFileTwoLine
         cout << "*";
     }
     cout << endl;
-  
+
 }
 
 // Prompting Service
 void FileService::promptingServ(const vector<pair<int, string>>& fileOneContents,
-                   const vector<pair<int, string>>& fileTwoContents){
-  string userInput;
+    const vector<pair<int, string>>& fileTwoContents) {
+    string userInput;
 
-  cout << "Would you like to make a change?" << endl;
+    cout << "Would you like to make a change?" << endl;
 
-  cout << "Answer (Y/n): ";
-  cin >> userInput;
+    cout << "Answer (Y/n): ";
+    cin >> userInput;
 
-  if (userInput == "y" || userInput == "Y"){
-    cout << "You chose yes." << endl;
-    int baseFile;
-    baseFile = 1;
-    fusionService(fileOneContents, fileTwoContents, baseFile);
-  }else{
-    cout <<" You chose no." << endl;
-  }
+    if (userInput == "y" || userInput == "Y") {
+        cout << "You chose yes." << endl;
+        int baseFile;
+        baseFile = 1;
+        fusionService(fileOneContents, fileTwoContents, baseFile);
+    }
+    else {
+        cout << " You chose no." << endl;
+    }
 }
 
 // Method that fuses the files together.
 void FileService::fusionService(const vector<pair<int, string>>& fileOneContents,
-                   const vector<pair<int, string>>& fileTwoContents, int pBaseFile){
-  vector<pair<int, string>> fileFusedContents;
-  int baseFile = pBaseFile;
+    const vector<pair<int, string>>& fileTwoContents, int pBaseFile) {
+    vector<pair<int, string>> fileFusedContents;
+    int baseFile = pBaseFile;
 
-  // Copying Base File Info into New File
+    // Copying Base File Info into New File
 
-  if(baseFile == 1){
-    char userMergeIput;
-    int indexImplant;
+    if (baseFile == 1) {
+        char userMergeIput;
+        int indexImplant;
 
-    // Makes the Fused File.
-    for(int i=0;i<fileOneContents.size();i++){
-      fileFusedContents[i].first = fileOneContents[i].first;
-      fileFusedContents[i].second = fileOneContents[i].second;
-    }
-
-    // Iterate through File 2
-    for(int j=0;j<fileTwoContents.size();j++){
-      if(fileOneContents[j].second!=fileTwoContents[j].second){
-        cout << fileTwoContents[j].second << endl;
-        cout << "Merge Line?(Y/n): ";
-        cin >> userMergeIput;
-
-        if(userMergeIput == 'Y' || userMergeIput == 'y'){
-          cout << "Input index number to insert line: ";
-          cin >> indexImplant;
-
-          fileFusedContents[indexImplant].second = fileTwoContents[j].second;
+        // Makes the Fused File.
+        for (int i = 0; i < fileOneContents.size(); i++) {
+            fileFusedContents.push_back(make_pair(fileOneContents[i].first, fileOneContents[i].second));
         }
 
-      }
-      
-    }
-    // Display Fused File Contents.
-    cout << "************************** Fused File *************************" << endl;
-    for(int k=0;k<fileFusedContents.size();k++){
-      cout << "| " << fileFusedContents[k].first << " |" << fileFusedContents[k].second << endl;
+        // Iterate through File 2
+        for (int j = 0; j < fileTwoContents.size(); j++) {
+            if (fileOneContents[j].second != fileTwoContents[j].second) {
+                cout << fileTwoContents[j].second << endl;
+                cout << "Merge Line?(Y/n): ";
+                cin >> userMergeIput;
+
+                if (userMergeIput == 'Y' || userMergeIput == 'y') {
+                    cout << "Input index number to insert line: ";
+                    cin >> indexImplant;
+
+                    fileFusedContents[indexImplant].second = fileTwoContents[j].second;
+                }
+
+            }
+
+        }
+        // Display Fused File Contents.
+        cout << "************************** Fused File *************************" << endl;
+        for (int k = 0; k < fileFusedContents.size(); k++) {
+            cout << "| " << fileFusedContents[k].first << " |" << fileFusedContents[k].second << endl;
+        }
+
     }
 
-  }
+    //if (baseFile == 2) {
+    //    for (int j = 0; j < fileTwoContents.size(); j++) {
+    //        fileFusedContents[j].first = fileTwoContents[j].first;
+    //        fileFusedContents[j].second = fileTwoContents[j].second;
+    //    }
+    //}
 
-  if(baseFile == 2){
-    for(int j=0;j<fileTwoContents.size();j++){
-      fileFusedContents[j].first = fileTwoContents[j].first;
-      fileFusedContents[j].second = fileTwoContents[j].second;
-    }
-  }
-  
 
 }
 
