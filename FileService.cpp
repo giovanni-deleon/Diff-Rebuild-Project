@@ -208,9 +208,9 @@ void FileService::promptingServ(const vector<pair<int, string>>& fileOneContents
     cin >> userInput;
 
     if (userInput == "y" || userInput == "Y") {
-        cout << "You chose yes." << endl;
+        cout << "Which File should be The Base: ";
         int baseFile;
-        baseFile = 1;
+        cin >> baseFile;
         fusionService(fileOneContents, fileTwoContents, baseFile);
     }
     else {
@@ -246,7 +246,7 @@ void FileService::fusionService(const vector<pair<int, string>>& fileOneContents
                     cout << "Input index number to insert line: ";
                     cin >> indexImplant;
 
-                    fileFusedContents[indexImplant].second = fileTwoContents[j].second;
+                    fileFusedContents[indexImplant-1].second = fileTwoContents[j].second;
                 }
 
             }
@@ -255,17 +255,52 @@ void FileService::fusionService(const vector<pair<int, string>>& fileOneContents
         // Display Fused File Contents.
         cout << "************************** Fused File *************************" << endl;
         for (int k = 0; k < fileFusedContents.size(); k++) {
-            cout << "| " << fileFusedContents[k].first << " |" << fileFusedContents[k].second << endl;
+            if(k > 8){
+              cout << "|   " << fileFusedContents[k].first << "  |" << fileFusedContents[k].second << endl;
+            }else{
+              cout << "|   " << fileFusedContents[k].first << "   |" << fileFusedContents[k].second << endl;
+            }
         }
 
     }
 
-    //if (baseFile == 2) {
-    //    for (int j = 0; j < fileTwoContents.size(); j++) {
-    //        fileFusedContents[j].first = fileTwoContents[j].first;
-    //        fileFusedContents[j].second = fileTwoContents[j].second;
-    //    }
-    //}
+    if (baseFile == 2) {
+        char userMergeIput;
+        int indexImplant;
+
+        // Makes the Fused File.
+        for (int l = 0; l < fileTwoContents.size(); l++) {
+            fileFusedContents.push_back(make_pair(fileTwoContents[l].first, fileTwoContents[l].second));
+        }
+
+        // Iterate through File 2
+        for (int m = 0; m < fileOneContents.size(); m++) {
+            if (fileOneContents[m].second != fileTwoContents[m].second) {
+                cout << fileOneContents[m].second << endl;
+                cout << "Merge Line?(Y/n): ";
+                cin >> userMergeIput;
+
+                if (userMergeIput == 'Y' || userMergeIput == 'y') {
+                    cout << "Input index number to insert line: ";
+                    cin >> indexImplant;
+
+                    fileFusedContents[indexImplant-1].second = fileOneContents[m].second;
+                }
+
+            }
+
+        }
+        // Display Fused File Contents.
+        cout << "************************** Fused File *************************" << endl;
+        for (int k = 0; k < fileFusedContents.size(); k++) {
+            if(k > 8){
+              cout << "|   " << fileFusedContents[k].first << "  |" << fileFusedContents[k].second << endl;
+            }else{
+              cout << "|   " << fileFusedContents[k].first << "   |" << fileFusedContents[k].second << endl;
+            }
+        }
+
+    }
 
 
 }
